@@ -3,10 +3,10 @@ package com.projeto.changebooktransactions.integration.book.response;
 import com.projeto.changebooktransactions.config.Messages;
 import com.projeto.changebooktransactions.integration.user.response.User;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Document
 public class Book {
 
     @Id
@@ -39,7 +39,6 @@ public class Book {
     @NotNull(message = Messages.IMAGE_IS_REQUIRED)
     private String image;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @DBRef(db = "user")
     private User user;
 }

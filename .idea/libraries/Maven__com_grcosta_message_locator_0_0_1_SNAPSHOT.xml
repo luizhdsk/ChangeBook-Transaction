@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.grcosta:message-locator:0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/grcosta/message-locator/0.0.1-SNAPSHOT/message-locator-0.0.1-20200129.010607-1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/grcosta/message-locator/0.0.1-SNAPSHOT/message-locator-0.0.1-20200129.010607-1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/grcosta/message-locator/0.0.1-SNAPSHOT/message-locator-0.0.1-20200129.010607-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -6,6 +6,7 @@ import com.projeto.changebooktransactions.domain.TransactionRequest;
 import com.projeto.changebooktransactions.integration.book.client.BookClient;
 import com.projeto.changebooktransactions.integration.user.client.UserClient;
 import com.projeto.changebooktransactions.integration.user.response.User;
+import com.projeto.changebooktransactions.service.SequenceServiceGenerator;
 import com.projeto.changebooktransactions.service.TransactionService;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class TransactionFacade {
     private UserClient userClient;
 
     @Autowired
+    private SequenceServiceGenerator sequenceServiceGenerator;
+
+    @Autowired
     public TransactionFacade(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
@@ -39,6 +43,7 @@ public class TransactionFacade {
             transactionService.createTransaction(transaction);
         } else{
             val transaction = transactionRequest.toSellTransaction(bookPartner, user);
+            transaction.setId(sequenceServiceGenerator.generateSequence(Transaction.SEQUENCE_NAME));
             transactionService.createTransaction(transaction);
         }
 

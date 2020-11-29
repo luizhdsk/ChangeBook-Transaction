@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.projeto.changebooktransactions.integration.book.response.Book;
 import com.projeto.changebooktransactions.integration.user.response.User;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -15,28 +17,25 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Document
 public class Transaction {
 
+    @Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
+
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @OneToOne
-    @JoinColumn(name = "book_partner")
+    @DBRef(db = "book")
     private Book bookPartner;
 
-    @OneToOne
-    @JoinColumn(name = "book_user")
+    @DBRef(db = "book")
     private Book bookUser;
 
-    @OneToOne
-    @JoinColumn(name = "old_owner")
+    @DBRef(db = "user")
     private User oldOwner;
 
-    @OneToOne
-    @JoinColumn(name = "new_owner")
+    @DBRef(db = "user")
     private User newOwner;
 
     @JsonProperty("transaction_type")
