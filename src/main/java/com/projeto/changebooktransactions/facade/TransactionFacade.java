@@ -9,6 +9,8 @@ import com.projeto.changebooktransactions.integration.user.response.User;
 import com.projeto.changebooktransactions.service.SequenceServiceGenerator;
 import com.projeto.changebooktransactions.service.TransactionService;
 import lombok.val;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +30,8 @@ public class TransactionFacade {
     @Autowired
     private SequenceServiceGenerator sequenceServiceGenerator;
 
+    Logger logger = LoggerFactory.getLogger(TransactionFacade.class);
+
     @Autowired
     public TransactionFacade(TransactionService transactionService) {
         this.transactionService = transactionService;
@@ -42,8 +46,9 @@ public class TransactionFacade {
             val transaction = transactionRequest.toTradeTransaction(bookPartner, bookUser);
             transactionService.createTransaction(transaction);
         } else{
-            val transaction = transactionRequest.toSellTransaction(bookPartner, user);
+            Transaction transaction = transactionRequest.toSellTransaction(bookPartner, user);
             transaction.setId(sequenceServiceGenerator.generateSequence(Transaction.SEQUENCE_NAME));
+            logger.info(String.valueOf(transaction));
             transactionService.createTransaction(transaction);
         }
 

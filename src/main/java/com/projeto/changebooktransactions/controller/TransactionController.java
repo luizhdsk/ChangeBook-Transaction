@@ -3,6 +3,8 @@ package com.projeto.changebooktransactions.controller;
 import com.projeto.changebooktransactions.domain.Transaction;
 import com.projeto.changebooktransactions.domain.TransactionRequest;
 import com.projeto.changebooktransactions.facade.TransactionFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import javax.validation.constraints.NotNull;
 public class TransactionController {
 
     private TransactionFacade transactionFacade;
+
+    Logger logger = LoggerFactory.getLogger(TransactionFacade.class);
 
     @Autowired
     public TransactionController(TransactionFacade transactionFacade) {
@@ -33,8 +37,10 @@ public class TransactionController {
     @PatchMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updateTransaction(@RequestParam String transactionId,@RequestHeader String Authorization) throws IllegalArgumentException {
-        if (transactionId != null)
+        if (transactionId != null) {
+            logger.info(transactionId);
             transactionFacade.updateTransaction(transactionId);
+        }
         else
             throw new IllegalArgumentException("Invalid data.");
     }
@@ -42,18 +48,22 @@ public class TransactionController {
     @GetMapping("/incompleted")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getUserIncompletedTransactions(@RequestParam @NotNull String expand, @RequestHeader String Authorization){
+        logger.info(transactionFacade.getUserIncompleteTransactions(expand,Authorization).toString());
         return ResponseEntity.ok(transactionFacade.getUserIncompleteTransactions(expand,Authorization));
     }
 
     @GetMapping("/completed")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getUserCompletedTransactions(@RequestParam @NotNull String expand,@RequestHeader String Authorization){
+        logger.info(transactionFacade.getUserCompleteTransactions(expand,Authorization).toString());
         return ResponseEntity.ok(transactionFacade.getUserCompleteTransactions(expand,Authorization));
     }
 
     @PatchMapping("/cancel")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void cancelTransactions(@RequestParam String transactionId,@RequestHeader String Authorization) {
+        logger.info(transactionId);
+        logger.info(Authorization);
         transactionFacade.cancelTransaction(transactionId, Authorization);
     }
 }

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Document
+@ToString
 public class Transaction {
 
     @Transient
