@@ -40,6 +40,5 @@ public class Book {
     @NotNull(message = Messages.IMAGE_IS_REQUIRED)
     private String image;
 
-    @DBRef(db = "user")
     private User user;
 }
