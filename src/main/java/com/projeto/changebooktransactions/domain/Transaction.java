@@ -26,16 +26,12 @@ public class Transaction {
     @Id
     private String id;
 
-    @DBRef(db = "book")
     private Book bookPartner;
 
-    @DBRef(db = "book")
     private Book bookUser;
 
-    @DBRef(db = "user")
     private User oldOwner;
 
-    @DBRef(db = "user")
     private User newOwner;
 
     @JsonProperty("transaction_type")

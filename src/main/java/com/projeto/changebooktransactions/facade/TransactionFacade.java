@@ -4,6 +4,7 @@ import com.projeto.changebooktransactions.domain.StatusTransaction;
 import com.projeto.changebooktransactions.domain.Transaction;
 import com.projeto.changebooktransactions.domain.TransactionRequest;
 import com.projeto.changebooktransactions.integration.book.client.BookClient;
+import com.projeto.changebooktransactions.integration.book.response.Book;
 import com.projeto.changebooktransactions.integration.user.client.UserClient;
 import com.projeto.changebooktransactions.integration.user.response.User;
 import com.projeto.changebooktransactions.service.SequenceServiceGenerator;
@@ -35,14 +36,14 @@ public class TransactionFacade {
 
     public void createTransaction(TransactionRequest transactionRequest,
                                   String Authorization) throws IllegalArgumentException {
-        val user = getUserByToken(Authorization);
-        val bookPartner = bookClient.getBookById(transactionRequest.getBookPartnerId(), Authorization);
+        User user = getUserByToken(Authorization);
+        Book bookPartner = bookClient.getBookById(transactionRequest.getBookPartnerId(), Authorization);
         if(!(transactionRequest.getBookUserId() == null)){
-            val bookUser = bookClient.getBookById(transactionRequest.getBookUserId(), Authorization);
-            val transaction = transactionRequest.toTradeTransaction(bookPartner, bookUser);
+            Book bookUser = bookClient.getBookById(transactionRequest.getBookUserId(), Authorization);
+            Transaction transaction = transactionRequest.toTradeTransaction(bookPartner, bookUser);
             transactionService.createTransaction(transaction);
         } else{
-            val transaction = transactionRequest.toSellTransaction(bookPartner, user);
+            Transaction transaction = transactionRequest.toSellTransaction(bookPartner, user);
             transaction.setId(sequenceServiceGenerator.generateSequence(Transaction.SEQUENCE_NAME));
             transactionService.createTransaction(transaction);
         }
