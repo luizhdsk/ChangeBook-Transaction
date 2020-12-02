@@ -4,9 +4,11 @@ import com.projeto.changebooktransactions.config.Messages;
 import com.projeto.changebooktransactions.integration.user.response.User;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -38,7 +40,7 @@ public class Book {
     private Boolean isForSell;
 
     @NotNull(message = Messages.IMAGE_IS_REQUIRED)
-    private StringBuilder image;
+    private String image;
 
     private User user;
 }

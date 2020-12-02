@@ -14,13 +14,13 @@ import java.util.List;
 public interface BookClient {
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{bookId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{bookId}", consumes = "application/json", produces = "application/json")
     Book getBookById(@PathVariable("bookId") String bookId,
                      @RequestHeader("Authorization") String token);
 
     @RequestMapping(method = RequestMethod.PUT)
     void updateBook(@RequestBody Book book);
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
     List<Book> getUserBooks(@RequestHeader("Authorization") String token);
 }
