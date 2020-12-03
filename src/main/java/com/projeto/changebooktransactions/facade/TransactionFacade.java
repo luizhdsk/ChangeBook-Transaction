@@ -31,7 +31,6 @@ public class TransactionFacade {
     @Autowired
     private SequenceServiceGenerator sequenceServiceGenerator;
 
-    Logger logger = LoggerFactory.getLogger(TransactionFacade.class);
 
     @Autowired
     public TransactionFacade(TransactionService transactionService) {
@@ -41,18 +40,14 @@ public class TransactionFacade {
     public void createTransaction(TransactionRequest transactionRequest,
                                   String Authorization) throws IllegalArgumentException {
         User user = getUserByToken(Authorization);
-        logger.info(user.toString());
         Book bookPartner = bookClient.getBookById(transactionRequest.getBookPartnerId(), Authorization);
-        logger.info(bookPartner.toString());
         if(!(transactionRequest.getBookUserId() == null)){
             Book bookUser = bookClient.getBookById(transactionRequest.getBookUserId(), Authorization);
             Transaction transaction = transactionRequest.toTradeTransaction(bookPartner, bookUser);
-            logger.info(transaction.toString());
             transactionService.createTransaction(transaction);
         } else{
             Transaction transaction = transactionRequest.toSellTransaction(bookPartner, user);
             transaction.setId(sequenceServiceGenerator.generateSequence(Transaction.SEQUENCE_NAME));
-            logger.info(String.valueOf(transaction));
             transactionService.createTransaction(transaction);
         }
 
