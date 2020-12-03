@@ -5,10 +5,13 @@ import com.projeto.changebooktransactions.config.exception.TransactionException;
 import com.projeto.changebooktransactions.domain.StatusTransaction;
 import com.projeto.changebooktransactions.domain.Transaction;
 import com.projeto.changebooktransactions.domain.TransactionType;
+import com.projeto.changebooktransactions.facade.TransactionFacade;
 import com.projeto.changebooktransactions.integration.book.client.BookClient;
 import com.projeto.changebooktransactions.integration.user.response.User;
 import com.projeto.changebooktransactions.repository.TransactionRepository;
 import lombok.val;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,8 @@ public class TransactionService {
 
     @Autowired
     protected BookClient bookClient;
+
+    Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
     @Autowired
     public TransactionService(TransactionRepository transactionRepository) {
@@ -52,6 +57,7 @@ public class TransactionService {
     public void updateTransaction(String transactionId) {
         if (transactionRepository.existsById(transactionId)) {
             val transaction = transactionRepository.findById(transactionId).get();
+            logger.info(transaction.getTransactionType().toString());
             validateTransactionType(transaction.getTransactionType());
             if (transaction.getStatusTransaction().equals(StatusTransaction.PENDING)) {
                 transaction.setStatusTransaction(StatusTransaction.COMPLETED);
@@ -64,8 +70,8 @@ public class TransactionService {
     }
 
     private void validateTransactionType(TransactionType transactionType) {
-        if (!transactionType.equals(TransactionType.SELL.toString())
-                || !transactionType.equals(TransactionType.TRADE.toString())) ;
+        if (!(transactionType.equals(TransactionType.SELL.toString())
+                || transactionType.equals(TransactionType.TRADE.toString()))) ;
         throw new IllegalArgumentException();
     }
 
