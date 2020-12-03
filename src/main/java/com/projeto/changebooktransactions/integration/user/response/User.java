@@ -11,13 +11,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document
 public class User {
 
     @JsonProperty("user_name")
     private String userName;
 
-    @Id
     private String cpf;
 
     private String city;
