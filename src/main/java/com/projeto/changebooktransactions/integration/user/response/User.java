@@ -20,7 +20,6 @@ public class User {
     @Id
     private String cpf;
 
-    @Indexed(unique = true)
     private String city;
 
     @Indexed(unique = true)
