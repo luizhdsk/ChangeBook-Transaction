@@ -57,8 +57,8 @@ public class TransactionService {
     public void updateTransaction(String transactionId) {
         if (transactionRepository.existsById(transactionId)) {
             val transaction = transactionRepository.findById(transactionId).get();
-            logger.info(transaction.getTransactionType().toString());
-            validateTransactionType(transaction.getTransactionType());
+            //logger.info(transaction.getTransactionType().toString());
+            //validateTransactionType(transaction.getTransactionType());
             if (transaction.getStatusTransaction().equals(StatusTransaction.PENDING)) {
                 transaction.setStatusTransaction(StatusTransaction.COMPLETED);
                 transaction.setEndDate(LocalDate.now());
