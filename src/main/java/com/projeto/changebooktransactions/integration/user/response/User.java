@@ -22,8 +22,6 @@ public class User {
 
     private String city;
 
-
-    @Indexed(unique = true)
     private String email;
 
     private String phone;
