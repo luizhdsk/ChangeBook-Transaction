@@ -19,7 +19,7 @@ public interface BookClient {
                      @RequestHeader("Authorization") String token);
 
     @RequestMapping(method = RequestMethod.PUT)
-    void updateBook(@RequestBody Book book);
+    void updateBook(@RequestBody Book book, @RequestHeader("Authorization") String token);
 
     @RequestMapping(method = RequestMethod.GET)
     List<Book> getUserBooks(@RequestHeader("Authorization") String token);

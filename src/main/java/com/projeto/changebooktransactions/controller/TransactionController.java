@@ -39,7 +39,7 @@ public class TransactionController {
     public void updateTransaction(@RequestParam String transactionId,@RequestHeader String Authorization) throws IllegalArgumentException {
         if (transactionId != null) {
             logger.info(transactionId);
-            transactionFacade.updateTransaction(transactionId);
+            transactionFacade.updateTransaction(transactionId,Authorization);
         }
         else
             throw new IllegalArgumentException("Invalid data.");

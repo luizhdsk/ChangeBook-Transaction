@@ -10,6 +10,7 @@ import com.projeto.changebooktransactions.integration.book.client.BookClient;
 import com.projeto.changebooktransactions.integration.user.response.User;
 import com.projeto.changebooktransactions.repository.TransactionRepository;
 import lombok.val;
+import org.aspectj.weaver.patterns.IToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class TransactionService {
     }
 
 
-    public void updateTransaction(String transactionId) {
+    public void updateTransaction(String transactionId, String token) {
         if (transactionRepository.existsById(transactionId)) {
             val transaction = transactionRepository.findById(transactionId).get();
             //logger.info(transaction.getTransactionType().toString());
@@ -63,7 +64,7 @@ public class TransactionService {
                 transaction.setStatusTransaction(StatusTransaction.COMPLETED);
                 transaction.setEndDate(LocalDate.now());
             }
-            updateBookInformation(transaction);
+            updateBookInformation(transaction, token);
             transactionRepository.save(transaction);
         } else
             throw new IllegalArgumentException("Transaction is canceled.");
@@ -75,16 +76,16 @@ public class TransactionService {
         throw new IllegalArgumentException();
     }
 
-    private void updateBookInformation(Transaction transaction) {
+    private void updateBookInformation(Transaction transaction, String token) {
         User newUser = transaction.getNewOwner();
         if (transaction.getStatusTransaction().equals(StatusTransaction.COMPLETED) && transaction.getTransactionType().equals(TransactionType.TRADE)) {
             transaction.getBookUser().setUser(transaction.getOldOwner());
-            bookClient.updateBook(transaction.getBookUser());
+            bookClient.updateBook(transaction.getBookUser(), token);
             transaction.getBookPartner().setUser(newUser);
-            bookClient.updateBook(transaction.getBookPartner());
+            bookClient.updateBook(transaction.getBookPartner(), token);
         } else if (transaction.getStatusTransaction().equals(StatusTransaction.COMPLETED) && transaction.getTransactionType().equals(TransactionType.SELL)) {
             transaction.getBookPartner().setUser(newUser);
-            bookClient.updateBook(transaction.getBookPartner());
+            bookClient.updateBook(transaction.getBookPartner(), token);
         }
 
     }

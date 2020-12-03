@@ -73,9 +73,9 @@ public class TransactionFacade {
         return transactionService.getUserTransaction(expand,user);
     }
 
-    public void updateTransaction(String transactionId) throws IllegalArgumentException {
+    public void updateTransaction(String transactionId, String token) throws IllegalArgumentException {
         if (transactionId != null)
-            transactionService.updateTransaction(transactionId);
+            transactionService.updateTransaction(transactionId,token);
         else
             throw new IllegalArgumentException("Invalid data.");
     }
